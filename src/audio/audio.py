@@ -1,5 +1,6 @@
 from src.witdirectory import witfile
 import speech_recognition as sr
+import wit
 
 
 class Audio(object):
@@ -8,6 +9,10 @@ class Audio(object):
 
     def __init__(self):
         self.r = sr.Recognizer()
+
+    def setup(self):
+        for index, name in enumerate(sr.Microphone.list_microphone_names()):
+            print("< Microphone with name \"{1}\" found for `Microphone(device_index={0})`".format(index, name))
 
     def record_on_terminal(self):
         i = 0
@@ -43,7 +48,16 @@ class Audio(object):
         except sr.RequestError as e:
             return "error" + e
 
+    def response(self):
+        resp = None
+        with sr.Microphone() as source:
+            self.r.adjust_for_ambient_noise(source)
+            audio = self.r.listen(source)
+
+            resp = wit.Wit(self.config['Server_Access']).speech(audio, None, {'Content-Type': 'audio/mpeg3'})
+        return resp
+
 
 if __name__ == '__main__':
     json_audio = Audio()
-    print(json_audio.record())
+    json_audio.setup()
