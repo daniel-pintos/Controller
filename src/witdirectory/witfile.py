@@ -2,7 +2,6 @@ import wit
 
 
 class WitMain(object):
-
     config = {
         "Server_Access": "KVK4NH345RMGO4FW7U7U3PBYWPTOY2XS",
         "Client_Access": "4MIYOOWP2X6552JH5CPPYIS6CLT63AEW"
