@@ -14,9 +14,13 @@ def senha_criptografada():
 
 if __name__ == '__main__':
     json = json_ler()
-    json_audio = Audio()
-    login = VikiLogin()
-    login.login_viki(json['cpf'], json['senha'])
-    json_audio.setup()
-    # if json_audio.record().lower() == "abrir um processo":
-    #     login.novo_process()
+    audio = Audio()
+    # TODO: alterar para fazer com a páginação
+    # login = VikiLogin()
+    # login.login_viki(json['cpf'], json['senha'])
+    audio.setup()
+    dict_json = VikiLogin.href
+    print("--"*10 + " começando " + "--"*10)
+    for link in dict_json.values():
+        print(str(dict_json.get(link)) + " | " + link)
+

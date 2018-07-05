@@ -25,7 +25,7 @@ class Audio(object):
             while fala != 'sair':
                 if audio is not None:
                     try:
-                        # print(self.r.recognize_google(audio, language="pt", show_all=True))
+                        # print(self.r.recognize_google(aasdudio, language="pt", show_all=True))
                         print(self.r.recognize_wit(audio, self.config['Server_Access'], True))
                     except sr.UnknownValueError as error:
                         print("O google não conseguiu entender o que foi falado" + error)
@@ -40,17 +40,20 @@ class Audio(object):
             self.r.adjust_for_ambient_noise(source)
             audio = self.r.listen(source)
             try:
-                intencao = self.r.recognize_wit(audio, self.config['Server_Access'], True)['entities']['Intents'][0]['value']
-                return str(intencao)
+                return self.r.recognize_wit(audio, self.config['Server_Access'], True)
             except sr.UnknownValueError as error:
-                return "error" + error
+                return error
             except sr.RequestError as e:
-                return "error" + e
+                return e
 
-    def response(self):
+    def communtation(self):
         resp = None
         with sr.Microphone() as source:
             self.r.adjust_for_ambient_noise(source)
             audio = self.r.listen(source)
             resp = wit.Wit(self.config['Server_Access']).speech(audio, None, {'Content-Type': 'audio/mpeg3'})
         return resp
+
+
+if __name__ == '__main__':
+    a = Audio().record()

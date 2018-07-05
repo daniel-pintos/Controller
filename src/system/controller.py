@@ -62,9 +62,6 @@ class VikiLogin(object):
         element.click()
         element.find_element_by_class_name("processos").click()
 
-    def processo(self):
-        pass
-
     def menu_div(self):
         sleep(3)
         # div = self.google.find_element_by_id('gxHTMLWrpW0046')
