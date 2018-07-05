@@ -35,29 +35,22 @@ class Audio(object):
                 fala = self.r.recognize_wit(audio, self.config['Server_Access'], True)
 
     def record(self):
-        i = 0
+        print("fale alguma coisa")
         with sr.Microphone() as source:
             self.r.adjust_for_ambient_noise(source)
-            i += 1
-            print("Diga alguma coisa... {}".format(i))
             audio = self.r.listen(source)
-        try:
-            return self.r.recognize_wit(audio, self.config['Server_Access'], True)
-        except sr.UnknownValueError as error:
-            return "error" + error
-        except sr.RequestError as e:
-            return "error" + e
+            try:
+                intencao = self.r.recognize_wit(audio, self.config['Server_Access'], True)['entities']['Intents'][0]['value']
+                return str(intencao)
+            except sr.UnknownValueError as error:
+                return "error" + error
+            except sr.RequestError as e:
+                return "error" + e
 
     def response(self):
         resp = None
         with sr.Microphone() as source:
             self.r.adjust_for_ambient_noise(source)
             audio = self.r.listen(source)
-
             resp = wit.Wit(self.config['Server_Access']).speech(audio, None, {'Content-Type': 'audio/mpeg3'})
         return resp
-
-
-if __name__ == '__main__':
-    json_audio = Audio()
-    json_audio.setup()

@@ -1,0 +1,16 @@
+{
+  "_text": "olá mundo",
+  "entities": {
+    "teste": [{
+      "suggested": true,
+      "confidence": 0.69190630120286,
+      "value": "olá mundo",
+      "type": "value"
+    }],
+    "Intents": [{
+      "confidence": 0.84320597579341,
+      "value": "inicio"
+    }]
+  },
+  "msg_id": "0oBf1dQ4r4eBtHQAI"
+}
