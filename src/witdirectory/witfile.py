@@ -10,6 +10,10 @@ class WitMain(object):
     def __init__(self):
         self.wit = wit.Wit(self.config["Server_Access"])
 
-    def message(self, text='ola mundo'):
-        resp = self.wit.message(text)
+    @classmethod
+    def message(cls, text='ola mundo'):
+        resp = cls.wit.message(text)
         return resp['entities']['Intents'][0]['value'] if not None else "deu erro"
+
+    def message_response(self, texto='olá viki'):
+        return self.wit.message(texto)

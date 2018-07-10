@@ -35,7 +35,7 @@ class Audio(object):
                 fala = self.r.recognize_wit(audio, self.config['Server_Access'], True)
 
     def record(self):
-        print("fale alguma coisa")
+        print("Fale alguma coisa: ")
         with sr.Microphone() as source:
             self.r.adjust_for_ambient_noise(source)
             audio = self.r.listen(source)

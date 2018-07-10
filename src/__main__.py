@@ -1,10 +1,11 @@
-from flask import Flask, jsonify, current_app, session, redirect, url_for, escape, request, render_template
-from src.audio.audio import Audio
 from src.system.controller import VikiLogin
+from src.system.jsonmanuplation import json_ler
+from src.audio.audio import Audio
 
-app = Flask(__name__)
-app.config["DEBUG"] = True
-app.config['SECRET_KEY'] = "A0Zr98j/3yX R~XHH!jmN]LWX/,?RT"
+import src.system
+
+from sys import stdin
+import getpass
 
 
 def comparation_array_small(elem, array1):
@@ -13,20 +14,21 @@ def comparation_array_small(elem, array1):
             return True
     return False
 
-
-@app.route('/')
-def index():
-    return render_template("index.html"), 200
+def senha_criptografada():
+    return getpass.getpass('Senha: ') if stdin.isatty() else input("Senha: ")
 
 
-# O escape() precisa ser usado apenas se você não estiver usando um template.
-@app.route('/audio', methods=['GET', 'POST'])
-def record():
+if __name__ == '__main__':
+    json = json_ler()
     audio = Audio()
+    # TODO: alterar para fazer com a páginação
+    login = VikiLogin()
+    login.login_viki(json['cpf'], json['senha'])
     audio.setup()
     dict_json = VikiLogin.href
     hret = [key.title().lower() for key in VikiLogin.href]
-    print("--" * 10 + " começando " + "--" * 10)
+
+    print("--"*10 + " começando " + "--"*10)
     for link in dict_json.values():
         print(str(dict_json.get(link)) + " | " + link)
     res = audio.record()
@@ -34,10 +36,9 @@ def record():
     sublista = [res['entities'][subelement][0]['value'] for subelement in lista]
     for values in sublista:
         if comparation_array_small(values, hret):
-            return values
+            if values == 'processo':
+                print('abrir processo')
+                login.novo_process()
         else:
             print('não foi encontrado')
 
-
-if __name__ == '__main__':
-    app.run(use_reloader=True, debug=True)
